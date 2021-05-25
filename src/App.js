@@ -12,6 +12,7 @@ function App() {
   const [simbo, setSimbo] =useState('');
   const [link,setLink] =useState('');
   const [usd,setUsd] =useState('');
+  const [desc, setDesc] = useState('');
   //Creating function for handle submit
   const handleSumbit=()=>{
     //Storing api url and concatinate the inpute value which will return the response
@@ -19,10 +20,21 @@ function App() {
     //Using the axios to fetch the data from api url
     axios.get(url).then(res=>{
       const resData=res.data;
+      //Updating data with api data
+      setImage(resData.image.large);
+      setName(resData.name);
+      setSimbo(resData.symbol);
+      setLink(resData.links.homepage[0]);
+      setUsd("Price in USD: "+resData.market_data.current_price.usd + " $");
+      setDesc(JSON.stringify(resData.description.en))
     })
     .catch(err=>{
       console.log(err);
     })
+  }
+
+  function createMarkup(){
+    return {__html:desc}
   }
   return (
     <div style={{backgroundColor:"crimson",minHeight:"100vh"}} className="App">
@@ -46,7 +58,11 @@ function App() {
          <h2><a className="text-white" href={link}>{link}</a></h2>
          <br/>
          
-         <h2>{usd}</h2>
+         <h2>{usd} </h2>
+       </div>
+
+       <div className="text-white col-md-8 my-auto">
+         <div dangerouslySetInnerHTML={createMarkup()}></div>
        </div>
      </div>
     </div>
