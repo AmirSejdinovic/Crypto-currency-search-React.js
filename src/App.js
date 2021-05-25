@@ -2,10 +2,28 @@
 import './App.css';
 import React,{useState} from 'react';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import axios from 'axios';
 
 
 function App() {
   const [crypto,setCryoto] = useState('');
+  const [img,setImage] =useState('');
+  const [name,setName] =useState('');
+  const [simbo, setSimbo] =useState('');
+  const [link,setLink] =useState('');
+  const [usd,setUsd] =useState('');
+  //Creating function for handle submit
+  const handleSumbit=()=>{
+    //Storing api url and concatinate the inpute value which will return the response
+    const url ="https://api.coingecko.com/api/v3/coins/" + crypto;
+    //Using the axios to fetch the data from api url
+    axios.get(url).then(res=>{
+      const resData=res.data;
+    })
+    .catch(err=>{
+      console.log(err);
+    })
+  }
   return (
     <div style={{backgroundColor:"crimson",minHeight:"100vh"}} className="App">
 
@@ -17,7 +35,20 @@ function App() {
           </div>
           
       </div>
-      <button className="btn btn-secondary px-5 mt-5">Submit</button>
+      <button onClick={handleSumbit} className="btn btn-secondary px-5 mt-5">Submit</button>
+
+     <div className="mt-5 container-fluid d-flex justify-content-center">
+       <div className="col-md-4 bg-success p-2 rounded">
+         <img src={img} width="150" />
+         <br/>
+         <h1 className="tex-white">{name}</h1>
+         <h2>{simbo}</h2>
+         <h2><a className="text-white" href={link}>{link}</a></h2>
+         <br/>
+         
+         <h2>{usd}</h2>
+       </div>
+     </div>
     </div>
   );
 }
